@@ -1,0 +1,26 @@
+# import the necessary packages
+from imutils.video import VideoStream
+import datetime
+import argparse
+import imutils
+import time
+import cv2
+import os
+from PIL import Image
+
+path = '/home/pi/Desktop/motion' #absolute path
+
+image_paths = [os.path.join(path, f) for f in os.listdir(path)]
+#        images = []
+#        labels = []
+#        for image_path in image_paths:
+#                image_pil = Image.open(image_path).convert('L')
+#                image = np.array(image_pil, 'uint8')
+#                nbr = int(os.path.split(image_path)[1].split(".")[0].replace("subject", ""))
+#                faces = faceCascade.detectMultiScale(image)
+#                for (x, y, w, h) in faces:
+#                        images.append(image[y: y + h, x: x + w])
+#                        labels.append(nbr)
+ #                       cv2.imshow("Adding faces to traning set...", image[y: y + h, x: x + w])
+ #                       cv2.waitKey(50)
+print (image_paths)

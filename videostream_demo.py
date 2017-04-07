@@ -6,13 +6,7 @@ import imutils
 import time
 import cv2
 import os 
-import numpy as np
 from PIL import Image
-
-
-cascadePath = "haarcascade_frontalface_default.xml"
-faceCascade = cv2.CascadeClassifier(cascadePath)
-recognizer = cv2.face.createLBPHFaceRecognizer()
 
 def get_images_and_labels(path):
         image_paths = [os.path.join(path, f) for f in os.listdir(path)]
@@ -21,11 +15,8 @@ def get_images_and_labels(path):
         for image_path in image_paths:
                 image_pil = Image.open(image_path).convert('L')
                 image = np.array(image_pil, 'uint8')
-               # print (image)
-                nbr = int(os.path.split(image_path)[1].split("%")[0].replace("Subject", ""))
-                print (nbr)
+                nbr = int(os.path.split(image_path)[1].split(".")[0].replace("subject", ""))
                 faces = faceCascade.detectMultiScale(image)
-               # print (faces)
                 for (x, y, w, h) in faces:
                         images.append(image[y: y + h, x: x + w])
                         labels.append(nbr)
@@ -33,9 +24,14 @@ def get_images_and_labels(path):
                         cv2.waitKey(50)
         return images, labels
 
-path = 'photo' #absolute path
+cascadePath = "haarcascade_frontalface_default.xml"
+faceCascade = cv2.CascadeClassifier(cascadePath)
+recognizer = cv2.face.createLBPHFaceRecognizer()
+
+path = '/home/pi/Desktop/motion' #absolute path
 
 images, labels = get_images_and_labels(path)
+cv2.destroyAllWindows()
 
 recognizer.train(images, np.array(labels))
 
@@ -45,6 +41,9 @@ ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--picamera", type=int, default=-1,
         help="whether or not the Raspberry Pi camera should be used")
 args = vars(ap.parse_args())
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+#face_cascade_p = cv2.CascadeClassifier('haarcascade_profileface.xml')
 
 # initialize the video stream and allow the cammera sensor to warmup
 vs = VideoStream(usePiCamera=args["picamera"] > 0).start()
@@ -66,16 +65,19 @@ while True:
 	# show the frame
         image_grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         predict_image = np.array(image_grey, 'uint8')
-        faces = faceCascade.detectMultiScale(predict_image, 1.1, 3) 
+        faces = face_cascade.detectMultiScale(predict_image, 1.1, 3) 
         for (x, y, w, h) in faces:
-             mid_x = int(x + (w/2))
-             mid_y = int(y + (h/2))
-             new_x = mid_x - 50
-             new_y = mid_y - 50
-             cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
-             crop_img = image_grey[new_y:new_y+100, new_x:new_x+100]
-             nbr_predicted = recognizer.predict(predict_image[y:y+h,x:x+w])
-             print (nbr_predicted)
+             nbr_predicted, conf = recognizer.predict(predict_image[y: y + h, x: x + w])
+
+       # faces_p = face_cascade_p.detectMultiScale(image_grey,1.1, 3)
+       # for (x,y,w,h) in faces:
+       #          mid_x = int(x + (w/2))
+       #          mid_y = int(y + (h/2))
+       #          new_x = mid_x - 50
+       #          new_y = mid_y - 50
+       #          crop_img = image_grey[new_y:new_y+100, new_x:new_x+100]
+       #          cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
+                 #cv2.imshow("Frame", image_greycrop_img)
 
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
