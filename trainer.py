@@ -7,6 +7,7 @@ recognizer = cv2.face.createLBPHFaceRecognizer()
 path = 'dataSet'
 
 def getImagesWithID(path):
+	nr = 0
 	imagePaths=[os.path.join(path,f) for f in os.listdir(path)]
 	faces = []
 	IDs = []
@@ -16,6 +17,8 @@ def getImagesWithID(path):
 		ID = int(os.path.split(imagePath)[-1].split('.')[1])
 		faces.append(faceNp)
 		IDs.append(ID)
+		nr = nr + 1 
+		print nr
 		cv2.imshow("training",faceNp)
 		cv2.waitKey(10)
 	return np.array(IDs), faces
