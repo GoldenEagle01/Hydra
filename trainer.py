@@ -12,15 +12,16 @@ def getImagesWithID(path):
 	faces = []
 	IDs = []
 	for imagePath in imagePaths:
-		faceImg = Image.open(imagePath).convert('L')
-		faceNp = np.array(faceImg, 'uint8')
-		ID = int(os.path.split(imagePath)[-1].split('.')[1])
-		faces.append(faceNp)
-		IDs.append(ID)
-		nr = nr + 1 
-		print nr
-		cv2.imshow("training",faceNp)
-		cv2.waitKey(10)
+		if('jpg' in imagePath):
+			faceImg = Image.open(imagePath).convert('L')
+			faceNp = np.array(faceImg, 'uint8')
+			ID = int(os.path.split(imagePath)[-1].split('.')[1])
+			faces.append(faceNp)
+			IDs.append(ID)
+			nr = nr + 1 
+			print nr
+			cv2.imshow("training",faceNp)
+			cv2.waitKey(10)
 	return np.array(IDs), faces
 
 IDs, faces = getImagesWithID(path)
