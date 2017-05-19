@@ -45,11 +45,12 @@ while (True):
 		x = x + int(0.1*w)
 		w = w - int(0.2*w)
 		sampleNr = sampleNr + 1
-		cv2.imwrite("dataSet/User."+str(id)+"."+str(sampleNr)+".jpg",gray[y:y+h,x:x+w])
+		face = gray[y:y+h,x:x+w]
+		cv2.imwrite("dataSet/User."+str(id)+"."+str(sampleNr)+".jpg",cv2.resize(face,(250,300)))
 		cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
 		cv2.waitKey(1)
 		cv2.imshow("face",frame)
-	if (sampleNr > 100):
+	if (sampleNr > 50):
 		break
 vs.stop()
 cv2.destroyAllWindows()

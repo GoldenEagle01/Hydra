@@ -84,7 +84,7 @@ while (True):
 	if (args.dual == 1):
 		predict_image1 = np.array(gray1, 'uint8')
 	predict_image = np.array(gray, 'uint8')
-	faces=faceDetect.detectMultiScale(predict_image,1.2,5)
+	faces=faceDetect.detectMultiScale(predict_image,1.3,5)
 	if (args.dual == 1):
 		faces1=faceDetect1.detectMultiScale(predict_image1,1.3,5)
 	for rect in rects:
@@ -107,15 +107,30 @@ while (True):
                         COUNTER = 0
                 cv2.putText(frame, "Blinks: {}".format(TOTAL), (10, 30),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 	for (x,y,w,h) in faces:
+		x = x + int(0.1*w)
+                w = w - int(0.2*w)
 		cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)	
 		id, conf = recognizer.predict(predict_image[y:y+h,x:x+w])
+		id1, conf = recognizer.predict(predict_image[y:y+h,x:x+w])
+		if (id == 1 and id1 == 1):
+			id = 'Andrei'
+		if (id == 2 and id1 == 2):
+			id = 'Alex'
+		if (id == 3 and id1 == 3):	
+			id = 'Ionut'
+		if (id == 4 and id1 == 4):
+			id = 'Ioana D'
+		if (id == 5 and id1 == 5):
+			id = 'Ioana L'
+		if (id == 6 and id1 == 6):
+			id = 'Rares'
 		print conf
 		if ((conf < 40) or ((conf > 40 and conf <50) and (w<200 and w>150))) or (((conf > 50 and conf < 70) and (w>100 and w<150)) or ((conf > 70 and conf<80) and (w>50 and w<100))):
 			nfaces = nfaces + 1
 			if (nfaces > 5 and TOTAL >= 0):
 				cv2.putText(frame,str(w)+" "+str(h),(x+w,y), font, 1,(255,255,255),1,1)
 				cv2.putText(frame,str(id),(x,y), font, 1,(255,255,255),1,1)	
-				cv2.putText(frame,str(conf),(x+w,y+h), font, 1,(255,255,255),1,1)		
+				cv2.putText(frame,str(conf),(x+w,y+h), font, 1,(255,255,255),1,1)				
 		else:
 			unknown = unknown + 1
 			if unknown > 5 and TOTAL >= 0:
