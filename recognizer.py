@@ -111,32 +111,27 @@ while (True):
                 w = w - int(0.2*w)
 		cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)	
 		id, conf = recognizer.predict(predict_image[y:y+h,x:x+w])
-		id1, conf = recognizer.predict(predict_image[y:y+h,x:x+w])
-		if (id == 1 and id1 == 1):
+		if (id == 1):
 			id = 'Andrei'
-		if (id == 2 and id1 == 2):
+		if (id == 2):
 			id = 'Alex'
-		if (id == 3 and id1 == 3):	
+		if (id == 3):	
 			id = 'Ionut'
-		if (id == 4 and id1 == 4):
+		if (id == 4):
 			id = 'Ioana D'
-		if (id == 5 and id1 == 5):
+		if (id == 5):
 			id = 'Ioana L'
-		if (id == 6 and id1 == 6):
+		if (id == 6):
 			id = 'Rares'
 		print conf
-		if ((conf < 40) or ((conf > 40 and conf <50) and (w<200 and w>150))) or (((conf > 50 and conf < 70) and (w>100 and w<150)) or ((conf > 70 and conf<80) and (w>50 and w<100))):
-			nfaces = nfaces + 1
-			if (nfaces > 5 and TOTAL >= 0):
-				cv2.putText(frame,str(w)+" "+str(h),(x+w,y), font, 1,(255,255,255),1,1)
-				cv2.putText(frame,str(id),(x,y), font, 1,(255,255,255),1,1)	
-				cv2.putText(frame,str(conf),(x+w,y+h), font, 1,(255,255,255),1,1)				
+		if (conf < 40):
+			cv2.putText(frame,str(w)+" "+str(h),(x+w,y), font, 1,(255,255,255),1,1)
+			cv2.putText(frame,str(id),(x,y), font, 1,(255,255,255),1,1)	
+			cv2.putText(frame,str(conf),(x+w,y+h), font, 1,(255,255,255),1,1)				
 		else:
-			unknown = unknown + 1
-			if unknown > 5 and TOTAL >= 0:
-				cv2.putText(frame,str(w)+" "+str(h),(x+w,y), font, 1,(255,255,255),1,1)
-				cv2.putText(frame,'Unkown',(x,y), font, 1,(255,255,255),1,1)
-				cv2.putText(frame,str(conf),(x+w,y+h), font, 1,(255,255,255),1,1)
+			cv2.putText(frame,str(w)+" "+str(h),(x+w,y), font, 1,(255,255,255),1,1)
+			cv2.putText(frame,'Unkown',(x,y), font, 1,(255,255,255),1,1)
+			cv2.putText(frame,str(conf),(x+w,y+h), font, 1,(255,255,255),1,1)
 	cv2.moveWindow('face', 80, 50)
 	cv2.imshow("face",frame)
 	if (args.dual == 1):
