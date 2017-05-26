@@ -9,12 +9,12 @@ import os
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 face_cascade_p = cv2.CascadeClassifier('haarcascade_profileface.xml')
 
-vs = VideoStream(src=0).start()
+vs = VideoStream(src=1).start()
 time.sleep(1.0)
 
 while True:
 	frame = vs.read()
-        #frame = imutils.resize(frame, width=250)
+        #frame = imutils.resize(frame, width=800)
  
         timestamp = datetime.datetime.now()
         ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
@@ -43,7 +43,8 @@ while True:
                  if (ok != k):	
 			crop_img = image_grey[new_y:new_y+100, new_x:new_x+100]
                  	cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
-        cv2.imshow("Frame", frame)
+        frame = imutils.resize(frame, 1080)
+	cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
  
         if key == ord("q"):

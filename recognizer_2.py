@@ -137,7 +137,7 @@ while (True):
                 if (id == 4):
                         id = 'Ioana D'
 		print conf, id
-		if ((conf < 30) or ((conf > 40 and conf <50) and (w<200 and w>150))) or (((conf > 50 and conf < 70) and (w>100 and w<150)) or ((conf > 70 and conf<80) and (w>50 and w<100))):
+		if ((conf < 40) or ((conf > 40 and conf <50) and (w<200 and w>150))) or (((conf > 50 and conf < 70) and (w>100 and w<150)) or ((conf > 70 and conf<80) and (w>50 and w<100))):
 			#cv2.putText(frame,str(w)+" "+str(h),(x+w,y), font, 1,(255,255,255),1,1)
 			cv2.putText(frame,str(id),(x,y), font, 1,(255,255,255),1,1)	
 			cv2.putText(frame,str(int(conf)),(x+w,y+h), font, 1,(255,255,255),1,1)		
